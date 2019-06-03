@@ -1,0 +1,161 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+/*headerCssStart*/
+.top{
+    background-color: #60ccae;
+    height: 8vh;
+}
+.title{
+    text-align: left;
+    padding-left: 8vh;
+    font-size: 5vh;
+    line-height: 8vh;
+    color: #FFFFFF;
+    font-family: 楷体;
+    background: url("../images/hbwllogo.png");
+    background-size: 8vh 8vh;
+    background-repeat: no-repeat;
+}
+.title img{
+    height: 8vh;
+    width: 8vh;
+}
+.bakeup{
+    float: right;
+    /*background-color: #0D3349;*/
+    color: #FFFFFF;
+    /*margin: 5vh 0 0 0;*/
+    text-align: center;
+    /*height: 3vh;*/
+    /*line-height: 8vh;*/
+    font-size: 2.4vh;
+}
+.top-menu{
+    list-style-type: none;
+    float: left;
+}
+
+.top-menu li{
+    margin-top: 5vh;
+    height: 3vh;
+    float: left;
+    margin-left: 2vw;
+    font-size: 2vh;
+}
+#liMenu{
+    text-align: center;
+    display: none;
+}
+#liMenu li{
+    width: 50%;
+    margin-left: 25%;
+    list-style-type: none;
+    padding: 0;
+    border: 1px solid #4cae4c;
+    /*border: 1px solid #4cae4c;*/
+}
+.title img{
+
+}
+#us{
+    /*background-color: #4cae4c;*/
+    /*width: 4vw;*/
+    /*border: #4cae4c 0.3px solid;*/
+    /*border-radius: 25%;*/
+}
+/*headerCssEnd*/
+
+/*asideStart*/
+.slide{
+    box-sizing: border-box;
+    height: 92vh;
+    padding-top: 3vh;
+    background-color: #2A3542;
+}
+.panel-title{
+    color: #ffffff;
+}
+.asidebar {
+    width: 100%;
+    padding-top: 2vh;
+}
+a{
+    text-decoration: none;
+}
+.sub-menu{
+    background-color: #6a7c8d;
+}
+.menu li{
+    width: 80%;
+    margin-left: 20%;
+    color: #f9fbff;
+    text-align: left;
+    list-style-type: none;
+    font-size: 1.8vh;
+}
+.menu a{
+    color: white;
+}
+a:hover{
+    text-decoration: none;
+    color: white;
+}
+.menuSlide li{
+    width: 65%;
+    margin-left: 35%;
+    text-align: left;
+    font-size: 1.6vh;
+    color: white;
+    list-style-type: none;
+}
+
+/*asideEnd*/
+
+/*articleStart*/
+.content{
+    height: 100vh;
+    background-color:rgba(33, 0, 212, 0.06);
+}
+#content-box{
+    /*height: 800px;*/
+}
+.swiper-container{
+    background-color: #2E8BDF;height: 50vh;margin-top: 3vh
+}
+.swiper-container img{
+    width: 100%;
+    height: 100%;
+    /*margin: 0 auto;*/
+}
+.contentUl li{
+    width: 100%;
+    list-style-type: none;
+    font-size:2.3vh;
+}
+.contentUl i{
+    color: #0db8c5
+}
+.noticeDate{
+    float: right;
+}
+.noticePanel{
+    margin-top: 5vh;
+}
+.notice{
+    background-color: #41b0ef;
+}
+.noticeTitle{
+    font-size: 2.5vh;
+}
+.noticeContent{
+    color: #0f0f0f;
+}
+a{
+    color: #0f0f0f;
+}
+a:hover{
+    color: #0f0f0f;
+}
+/*articleEnd*/

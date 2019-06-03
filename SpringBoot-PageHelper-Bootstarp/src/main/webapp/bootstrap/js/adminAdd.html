@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加学生信息表</title>
+    <link rel="stylesheet" type="text/css" href="../frame/bootstrap2/css/bootstrap.min.css">
+    <script src="../frame/jquery/jquery-3.3.1.js"></script>
+    <script src="../frame/layer/layer.js"></script>
+</head>
+<body>
+<form>
+    <div style="padding:20px;">
+        <div style="margin: 0 auto;width: 250px">
+            <label style="font-size: 15px;width: 70px;text-align: right">课程编号:</label>
+            <input type="text" style="height: 25px;margin-bottom: 8px">
+            <label style="font-size: 15px;width: 70px;text-align: right">课程名称:</label>
+            <input type="text" style="height: 25px;margin-bottom: 8px">
+            <label style="font-size: 15px;width: 70px;text-align: right">考试形式:</label>
+            <input type="text" style="height: 25px;margin-bottom: 8px">
+            <button id="class" style="height: 30px;width:250px;margin-bottom: 20px" class="btn btn-primary">班级</button>
+            <!--<label style="font-size: 15px;width: 80px;text-align: right">班级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</label>-->
+            <!--<select id="col" style="height: 25px;width: 170px;margin-bottom: 8px"><option></option></select>-->
+
+            <button style="margin-left: 100px;width: 100px;height: 30px" class="btn btn-primary">确认</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#class').on('click', function(){
+            parent.layer.open({
+                type: 2,
+                area: ['400px', '600px'],
+                title:'编辑',
+                shadeClose: true, //点击遮罩关闭
+                content: 'xuesheng.html' //这里content是一个普通的String
+            });
+        });
+    });
+</script>
+</body>
+</html>

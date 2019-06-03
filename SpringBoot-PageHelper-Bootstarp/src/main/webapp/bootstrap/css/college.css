@@ -1,0 +1,143 @@
+body{
+    background-color:#F2F0FC;
+}
+.content{
+    /*height: ;*/
+    padding-top: 2vh;
+    /*background-color: rgba(33, 0, 212, 0.06);*/
+}
+.contentUl li{
+    width: 100%;
+    list-style-type: none;
+    font-size:2.6vh;
+}
+.frameTitle{
+    font-size:2.5vh;
+    color: black;
+}
+.hr1{
+   border: 1px solid #579fff;
+   background-color: #579fff;
+}
+.query{
+    background-color: #0db8c5;
+}
+.queryDiv{
+    font-size: 2vh;
+    height: 5vh;
+    margin: 0 auto;
+}
+
+input{
+    background:none;
+    outline:none;
+    border:1px solid #1E9FFF;
+}
+input:focus { outline: none; }
+.collegeCheck{
+   width: 14vw;
+   height: 5vh;
+   margin: 0 auto;
+   border-radius: 8px;
+   font-size: 2vh;
+}
+.info{
+    background-color: #0db8c5;
+}
+.printForm{
+    float: right;
+}
+.bakeup{
+}
+.form-group label{
+    font-size: 1.8vh;
+    font-weight: 400;
+}
+
+#fileinp{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0,0);
+}
+#btn{
+    margin-right: 5px;
+}
+#text{
+    color: red;
+}
+#tb_departments {
+    color: black;
+ }
+#fm{
+    /*float: right;*/
+    /*display: inline;*/
+}
+/*#file1{*/
+    /*border: none;*/
+    /*outline: none;*/
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*opacity: 0;*/
+    /*-ms-filter: 'alpha(opacity=0)';*/
+    /*font-size: 200px;*/
+/*}*/
+#upload{
+
+}
+#upFile{
+    /*background-color: #1E9FFF;*/
+   border: none;
+}
+.input-file{
+    border: none;
+}
+.fileinput-button {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.fileinput-button input{
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px;
+}
+/*.fileinput-button {*/
+    /*position: relative;*/
+    /*display: inline-block;*/
+    /*overflow: hidden;*/
+/*}*/
+.dateIpt{
+    width: 80px;
+}
+.dateIpt2{
+    width: 80px;
+}
+.editp{
+    font-weight: normal;
+}
+.eidNum{
+    display: inline-block;
+    width: 10px;
+    text-align: left;
+}
+/*不显示秒的方法*/
+/*.layui-laydate-content>.layui-laydate-list {*/
+    /*padding-bottom: 0px;*/
+    /*overflow: hidden;*/
+/*}*/
+/*.layui-laydate-content>.layui-laydate-list>li{*/
+    /*width:50%*/
+/*}*/
+
+/*.merge-box .scrollbox .merge-list {*/
+    /*padding-bottom: 5px;*/
+/*}*/
+.ifile{
+    display: block;
+}

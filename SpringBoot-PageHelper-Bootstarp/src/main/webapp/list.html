@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+
+    <link rel="stylesheet" type="text/css" href="bootstrap/frame/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/frame/bootstrap2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="bootstrap/frame/bootstrap-table-master/src/bootstrap-table.css">
+    <link rel="stylesheet" type="text/css"
+          href="bootstrap/frame/bootstrap3-editable-1.5.1/bootstrap3-editable/css/bootstrap-editable.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/frame/bootstrap-fileinput-master/css/fileinput.css">
+
+    <script src="bootstrap/frame/jquery/jquery-3.3.1.js"></script>
+    <script src="bootstrap/frame/layer/layer.js"></script>
+    <script src="bootstrap/frame/bootstrap-table-master/src/bootstrap-table.js"></script>
+    <script src="bootstrap/frame/bootstrap3-editable-1.5.1/bootstrap3-editable/js/bootstrap-editable.js"></script>
+    <script src="bootstrap/frame/bootstrap-table-master/src/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="bootstrap/frame/bootstrap-table-master/dist/extensions/editable/bootstrap-table-editable.min.js"></script>
+    <script src="bootstrap/frame/bootstrap2/js/bootstrap.min.js"></script>
+
+    <script src="bootstrap/jquery-ui.js"></script>
+   <!-- <script src="http://cdn.bootcss.com/jqueryui/1.11.4/jquery-ui.js"></script>-->
+</head>
+<body>
+
+<div id="toolbar" class="btn-group">
+    <button id="click" type="button" class="btn btn-warning">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+    </button>
+    <button id="remove" type="button" class="btn btn-danger">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+    </button>
+</div>
+
+
+<br>
+<div>
+    <table id="page"></table>
+    <script>
+
+        var num=1;
+        var size=5;
+        var c=0;
+        $(function () {
+            initTable(1,5);//调用函数，初始化表格
+           /* $("#queryBtn").bind("click", initTable); //当点击查询按钮的时候执行,bootstrap-table前端分页是不能使用搜索功能*/
+            $("#remove").on("click", remove);
+        });
+
+        function remove() {
+            var rows = $("#page").bootstrapTable('getSelections'); //一定要使用bootstrapTable显示表格
+            console.log(rows);
+            if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                alert("请先选择要删除的记录!");
+                return;
+            } else {
+                var arrays = new Array();// 声明一个数组
+                $(rows).each(function () {// 通过获得选中的来进行遍历
+                    arrays.push(this.id);// cid为获得到的整条数据中的一列
+                });
+                console.log(arrays);
+            }
+            $.ajax({
+                type: "post",
+                url: 'company/delCompany',
+                traditional: true,
+                data: {
+                    ids: arrays
+                },
+                dataType: 'JSON',
+                success: function (data,status) {
+                    console.log(status);
+                    if (status == "success") {
+                        console.log('删除数据成功');
+                        console.log(num);
+                        initTable(num,size);
+                    }
+                },
+                error: function () {
+                    console.log('删除失败');
+                },
+                complete: function () {
+                }
+            });
+
+        };
+
+        function initTable(pageNumber,pageSize) {
+            $('#page').bootstrapTable('destroy'); //先销毁表格
+            $('#page').bootstrapTable({
+                url: 'http://localhost:8080/company/getCompany',
+                method: 'get',
+                toolbar: "#toolbar",
+                striped: true, // 是否显示行间隔色 //search : "true",
+                sidePagination: "server",
+                pageNumber: pageNumber, //初始化加载第一页，默认第一页
+                pageList: [5, 10, 20, 30, 40],//可供选择的每页的行数
+                pageSize: pageSize,//初始默认每页行数
+                pagination: true,
+                showRefresh: true,//刷新
+                showPaginationSwitch: true,//是否隐藏分页条
+                showToggle: true, //是否显示详细视图和列表视图的切换按钮
+                // clickToSelect: true,点击选中
+                editable: true,
+                contentType: "application/x-www-form-urlencoded",
+                paginationPreText: "上一页",
+                paginationNextText: "下一页",
+                queryParamsType: "limit",//设置为 ‘limit’ 则会发送符合 RESTFul 格式的参数.
+                sortable: true, // 是否启用排序
+                // queryParams: queryParams, //queryParams为参数设置的函数
+                queryParams: function (params) {
+ //           自定义参数，这里的参数是传给后台的，我这是是分页用的
+//            请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数，例如 toolbar 中的参数 如果
+//　　　　　　queryParamsType = 'limit' ,返回参数必须包含limit, offset, search, sort, order
+//            queryParamsType = 'undefined', 返回参数必须包含: pageSize, pageNumber, searchText, sortName, sortOrder.
+//            返回false将会终止请求。
+                    //把当前页数和每页大小存起来
+                    num=params.offset / params.limit + 1;
+                    size= params.limit;
+
+                    return {//这里的params是table提供的
+                        pageNum: (params.offset / params.limit) + 1, //当前页面,默认是上面设置的1(pageNumber)
+                        pageSize: params.limit, //每一页的数据行数，默认是上面设置的5(pageSize)
+                        /* username: $("#searchString_id").val()*/ //这个就是搜索框中的内容，可以自动传到后台，搜索实现在xml中体现
+                    };
+                },
+                columns: [
+                    {
+                        checkbox: true
+                    }, {
+                        field: 'id',
+                        title: '编号'
+                    },
+                    {
+                        field: 'phone',
+                        title: '电话号码',
+                        editable: {
+                            type: 'text',
+                            title: '年龄',
+                            mode: 'inline',
+
+                            validate: function (v) {
+                                if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(v)) {
+                                    return '电话号码不合法';
+                                }
+                            },
+                        }
+                    },
+                    {
+                        field: 'time',
+                        title: '发送时间',
+                        formatter: function (value, row, index) {
+                            return changeDateFormat(value)
+                        }
+                    },
+                    {
+                        field: 'email',
+                        title: '邮件地址',
+                        /*width: '300px',*/
+                        editable: {
+                            type: 'text',
+                            title: '邮件地址',
+                            mode: 'inline',
+                            validate: function (v) {
+                                if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(v)) {
+                                    return '邮箱不合法';
+                                }
+                            }
+                        }
+                    },
+                    {
+                        field: 'neir',
+                        title: '内容',
+                        width: '300px',
+                        editable: {
+                            type: 'text',
+                            title: '内容',
+                            mode: 'inline',
+                            validate: function (v) {
+                                if (!v) {
+                                    return '内容不能为空';
+                                }
+                            }
+                        }
+                    },
+                    {
+                        field: '',
+                        title: '操作',
+                        align: 'center',
+                        events: operateEvents,//给按钮注册事件
+                        formatter: addFunctionAlty//表格中增加按钮
+                    }],
+
+
+
+
+
+                onLoadSuccess: function () {  //加载成功时执行
+                    console.info("加载数据成功");
+                    console.log(num);
+                    console.log(c);
+                },
+
+
+                onLoadError: function () {  //加载失败时执行
+                    console.info("加载数据失败");
+                },
+
+
+
+
+
+                /*rowStyle 行内样式*/
+
+                rowStyle: function (row, index) { //隔行变色
+
+                    var classesArr = ['success', 'info'];
+                    var strclass = "";
+                    if (index % 2 === 0) {//偶数行
+                        strclass = classesArr[0];
+                    } else {//奇数行
+                        strclass = classesArr[1];
+                    }
+                    return { classes: strclass };
+                },
+
+                /*rowStyle: function (row, index) {//自定义字体颜色，或者背景颜色
+                    var style = {};
+                    style={css:{'color':'#ed5565'}};
+                    return style;
+                },*/
+
+
+
+
+                onEditableSave: function (field, row, oldValue, $el) {//行内编辑
+                    $.ajax({
+                        type: "post",
+                        url: 'http://localhost:8080/company/upCompany',
+                        data: {
+                            _method: "put",
+                            id: row.id,
+                            phone: row.phone,
+                            time: changeDateFormat(row.time),
+                            email: row.email,
+                            neir: row.neir
+                        },
+
+
+                        dataType: 'JSON',
+                        success: function (data, status) {
+                            console.log(row);
+                            console.log(status);
+                            if (status == "success") {
+                                console.log('修改数据成功');
+                                /*console.log(num);
+                                initTable(num,size);*/
+                            }
+                        },
+
+
+                        error: function () {
+                            console.log('修改数据失败');
+                        },
+
+
+                        complete: function () {
+                        }
+
+
+                    });
+
+                }
+
+            });
+
+
+
+
+
+        };
+
+        function addFunctionAlty(value, row, index) { //要进行的操作 操作函数
+            // 修改按钮、删除按钮
+            return [
+                /* '<button type="button" id="btn_edit" class="btn btn-info" data-toggle="modal" data-target="#ModalInfo">修改</button>  ',*/
+                '<button id="btn_delete" class="btn btn-danger">删除</button>'
+            ].join('');
+        }
+
+        window.operateEvents = {
+            'click #btn_delete': function (e, value, row, index) {
+                var arrays = new Array();
+                arrays.push(row.id);
+                console.log(arrays[0]);
+                $.ajax({
+                    url: "company/delCompany",
+                    type: "POST",
+                    traditional: true,
+                    data: {
+                        ids: arrays
+                    },
+
+                    success: function (data) {
+                        console.log("删除成功");
+                        console.log(num);
+                        initTable(num,size);
+
+                    }
+                })
+
+            }
+        }
+
+        //转换日期格式
+        function changeDateFormat(time) {
+            var d = new Date(time);
+            var year = d.getFullYear();       //年
+            var month = d.getMonth() + 1;     //月
+            var day = d.getDate();            //日
+            var hh = d.getHours();            //时
+            var mm = d.getMinutes();          //分
+            var ss = d.getSeconds();           //秒
+            var clock = year + "-";
+            if (month < 10)
+                clock += "0";
+            clock += month + "-";
+            if (day < 10)
+                clock += "0";
+            clock += day + " ";
+            if (hh < 10)
+                clock += "0";
+            clock += hh + ":";
+            if (mm < 10) clock += '0';
+            clock += mm + ":";
+            if (ss < 10) clock += '0';
+            clock += ss;
+            return (clock);
+        }
+    </script>
+
+
+    <div class="container-fluid">
+
+
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class="form-group">
+                            <label for="txt_phone">电话号码</label>
+                            <input type="text" name="txt_parentdepartment" class="form-control" id="txt_phone" placeholder="电话号码">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_email">邮件地址</label>
+                            <input type="text" name="txt_departmentlevel" class="form-control" id="txt_email" placeholder="邮件地址">
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_neir">内容</label>
+                            <input type="text" name="txt_statu" class="form-control" id="txt_neir" placeholder="内容">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-remove" aria-hidden="true"></i> 关闭</button>
+                        <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal" onclick="add()"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> 保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //注册新增按钮的事件
+        $("#click").click(function() {
+            $("#myModalLabel").text("新增");
+            $('#myModal').modal();
+        });
+
+        // 在模态框出现后添加可拖拽功能
+        $(document).on("show.bs.modal", ".modal", function() {
+            $(this).draggable({
+                handle: ".modal-header", // 只能点击头部拖动
+                cursor: "crosshair"
+            });
+            $(this).css("overflow", "hidden"); // 防止出现滚动条，出现的话，你会把滚动条一起拖着走的
+        });
+
+        function add() {
+            console.log("znegjia");
+            var phone=$("#txt_phone").val();
+            var email=$("#txt_email").val();
+            var neir=$("#txt_neir").val();
+            console.log(phone+"  "+email+"  "+neir)
+            $.ajax({
+                url:"company/addCompany",
+                type:"POST",
+                data:{
+                    phone:phone,
+                    email:email,
+                    neir:neir,
+                    size:size
+                    },
+                dataType:"JSON",
+                success:function (data,status) {
+                    console.log(data);
+                    console.log(status);
+                    if (status == "success") {
+                        console.log('添加数据成功');
+                        initTable(data,size)
+                    }
+                },
+                error: function () {
+                    console.log('添加数据失败');
+                },
+                complete: function () {
+                }
+            });
+
+
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>
